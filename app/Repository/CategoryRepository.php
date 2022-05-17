@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Interfaces\CategoryInterface;
 use App\Models\Category;
 use App\Utils\ResponseMessage;
+use Exception;
 
 class CategoryRepository extends Category implements CategoryInterface {
     
@@ -27,8 +28,36 @@ class CategoryRepository extends Category implements CategoryInterface {
         }
     }
 
-    public function storageCategory($request)
+    public function validCategory(array $category)
+    {   
+        if(!isset($category['name']))
+        {
+            throw new Exception(ResponseMessage::$required, 400);
+        }
+
+        if(!is_string($category['name']))
+        {
+            throw new Exception(ResponseMessage::$mustBeString);
+        }
+
+        $result = $this->getModel()->where('name' , 'like', $category['name'])->first();     
+        if($result)
+        {
+            throw new Exception(ResponseMessage::$categoryExist);
+        }
+
+        return $category;
+    }
+
+    public function storageCategory($data)
     {
-        //
+        try {
+            $category = $data->only($this->getModel()->getFillable());
+            $category = $this->validCategory($category);
+            $result   = $this->create($category);
+            return $result;
+        } catch (\Exception $e) {
+            return ResponseMessage::errorMessage(false, $e->getMessage());
+        }
     }
 }

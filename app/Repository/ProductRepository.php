@@ -51,7 +51,7 @@ class ProductRepository extends Product implements ProductInterface{
             return $response;
             
         } catch (\Exception $e) {
-            return ResponseMessage::errorMessage($product, $e->getMessage());
+            return ResponseMessage::errorMessage(false, $e->getMessage());
         }
     }
 }

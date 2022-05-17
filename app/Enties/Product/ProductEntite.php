@@ -3,6 +3,8 @@
 namespace App\Enties\Product;
 
 use App\Utils\ResponseMessage;
+use App\Repository\BrandRepository;
+use App\Repository\CategoryRepository;
 
 /**
  * @property string  $name
@@ -122,7 +124,12 @@ class ProductEntite {
         {
             return ResponseMessage::$mustBeInteger;
         }
-
+        
+        $brand = new BrandRepository();
+        if(!$brand->getById($data['brand_id']) instanceof BrandRepository){
+            return ResponseMessage::$notExistBrand;
+        }   
+        
         return null;
         
     }
@@ -142,6 +149,11 @@ class ProductEntite {
             return ResponseMessage::$mustBeInteger;
         }
 
+        $category =  new CategoryRepository();
+        if(!$category->getById($data['category_id']) instanceof CategoryRepository){
+            return ResponseMessage::$notExistCategory;
+        }  
+        
         return null;
     }
 }
