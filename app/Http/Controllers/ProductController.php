@@ -25,7 +25,7 @@ class ProductController extends Controller
 
         if (!Gate::allows(['user','product'], $user->original)) {
             return response()->json(['status' => 'User without authorization'], Response::HTTP_UNAUTHORIZED);
-        }
+        }   
 
         $productRepository = new ProductRepository();
         $reponse = $productRepository->productIndex($request->paginate);

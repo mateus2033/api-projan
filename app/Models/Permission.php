@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
     protected $table = 'permissions';
-    protected $fillable = ['product_permission','brand_permission','category_permission'];
+    protected $fillable = ['product_permission','brand_permission','category_permission','user_id'];
     use HasFactory;
 }

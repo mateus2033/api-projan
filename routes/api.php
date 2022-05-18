@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -52,3 +53,10 @@ Route::prefix('category/')->group(function () {
         Route::POST('logout', [AuthController::class, 'logout']);
     });
 });
+
+Route::prefix('admin/')->group(function () {
+    Route::group(['middleware' => ['apiJwt']], function () {
+        Route::POST('setPermission', [PermissionController::class, 'setPermission']);
+    });
+});
+

@@ -4,7 +4,6 @@ namespace App\Utils;
 
 class ResponseMessage {
 
-    
 
     public static $sucessGeneric = "Operação realizada com sucesso.";
     public static $errorGeneric  = "Erro ao realizar operação.";
@@ -16,7 +15,10 @@ class ResponseMessage {
     public static $categoryExist    = "Category já cadastrada.";
     public static $notExistBrand    = "Brand não encontrada.";
     public static $notExistCategory = "Category não encontrada.";
-
+    public static $permissionNotFound = "Permissão não encontrada.";
+    public static $notAuthorizate = "User Admin without authorization.";
+    public static $userNotUser = "User não encontrado.";
+    public static $mustValueBool = "mustBeBoolean";
 
     /**
      * Retorna mensagem generica de sucesso.
