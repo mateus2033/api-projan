@@ -7,13 +7,26 @@ use App\Repository\CategoryRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use App\Models\User as UserModel;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
 
-    
+    protected $userModel;
+
+    public function __construct(UserModel $userModel)
+    {
+        $this->userModel = $userModel;
+    }
+
     public function Index(Request $request)
     {
+        $user = $this->userModel->me();
+        if (!Gate::allows(['user','category'], $user->original)) {
+            return response()->json(['status' => 'User without authorization'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $categoryRepository = new CategoryRepository();
         $response = $categoryRepository->CategoryIndex($request->paginate);
         return response()->json($response, Response::HTTP_OK);
@@ -21,6 +34,11 @@ class CategoryController extends Controller
 
     public function getById(Request $request)
     {
+        $user = $this->userModel->me();
+        if (!Gate::allows(['user','category'], $user->original)) {
+            return response()->json(['status' => 'User without authorization'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $categoryRepository = new CategoryRepository();
         $response = $categoryRepository->getById($request->id);
         return response()->json(new CategoryResource($response),Response::HTTP_OK);
@@ -28,6 +46,11 @@ class CategoryController extends Controller
 
     public function storage(Request $request)
     {
+        $user = $this->userModel->me();
+        if (!Gate::allows(['user','category'], $user->original)) {
+            return response()->json(['status' => 'User without authorization'], Response::HTTP_UNAUTHORIZED);
+        }
+        
         $categoryRepository = new CategoryRepository();
         $reponse = $categoryRepository->storageCategory($request);
         
